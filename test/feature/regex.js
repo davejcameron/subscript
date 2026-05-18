@@ -22,6 +22,11 @@ test('regex: escapes', t => {
   is(parse('/a\\nb/')[1], 'a\\nb')
 })
 
+test('regex: leading equals', t => {
+  is(parse('/=/'), ['//', '='])
+  is(parse('/=>/g'), ['//', '=>', 'g'])
+})
+
 test('regex: eval', t => {
   is(run('/abc/.test("abc")'), true)
   is(run('/abc/.test("def")'), false)
@@ -32,6 +37,7 @@ test('regex: division disambiguation', t => {
   // Division when left operand exists
   is(run('4 / 2'), 2)
   is(run('a / b', { a: 10, b: 2 }), 5)
+  is(parse('a /= b'), ['/=', 'a', 'b'])
 
   // Regex when no left operand
   is(run('/a/.test("a")'), true)
